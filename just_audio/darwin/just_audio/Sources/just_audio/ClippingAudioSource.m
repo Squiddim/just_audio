@@ -97,7 +97,7 @@
 }
 
 - (CMTime)position {
-    return CMTimeSubtract(self.playerItem.currentTime, _start);
+    return CMTimeSubtract([_audioSource currentTime], _start);
 }
 
 - (CMTime)bufferedPosition {

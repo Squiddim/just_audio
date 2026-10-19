@@ -189,13 +189,19 @@
 - (void)setDuration:(CMTime)duration {
 }
 
+// currentTime blocks while a precise seek scans the file; the timebase doesn't.
+- (CMTime)currentTime {
+    CMTimebaseRef timebase = _playerItem.timebase;
+    return timebase ? CMTimebaseGetTime(timebase) : _playerItem.currentTime;
+}
+
 - (CMTime)position {
     NSValue *seekableRange = _playerItem.seekableTimeRanges.lastObject;
     if (seekableRange) {
         CMTimeRange range = [seekableRange CMTimeRangeValue];
-        return CMTimeSubtract(_playerItem.currentTime, range.start);
+        return CMTimeSubtract([self currentTime], range.start);
     } else {
-        return _playerItem.currentTime;
+        return [self currentTime];
     }
     
 }
@@ -206,7 +212,7 @@
         CMTimeRange timeRange = [last CMTimeRangeValue];
         return CMTimeAdd(timeRange.start, timeRange.duration);
     } else {
-        return _playerItem.currentTime;
+        return [self currentTime];
     }
     return kCMTimeInvalid;
 }

@@ -13,4 +13,6 @@
 
 - (instancetype)initWithId:(NSString *)sid uri:(NSString *)uri loadControl:(LoadControl *)loadControl headers:(NSDictionary *)headers options:(NSDictionary *)options;
 
+- (CMTime)currentTime;
+
 @end
